@@ -4,30 +4,52 @@ import TheWelcome from './components/TheWelcome.vue'
 import { ref, onMounted } from 'vue'
 import mapboxgl from 'mapbox-gl'
 
-onMounted(() => {
-  mapboxgl.accessToken = import.meta.env.VITE_TOKEN
+// public access token for mapbox
+mapboxgl.accessToken = import.meta.env.VITE_TOKEN
 
-  // initial map
-  const map = new mapboxgl.Map({
+// initialize map and array of user's pins
+const map = ref(null)
+const pins = ref([])
+
+onMounted(() => {
+  // map in a box
+  map.value = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v12',
     center: [-82.879143, 40.021568],   // gahanna, ohio
     zoom: 12
   })
 
-  // add a pin with description to the map
-  map.on('click', (e) => {
-    const pin = e.lngLat
-    const description = prompt('Add a description for your pin:')
+  // display all added pins (local storage only)
+  const addedPins = JSON.parse(localStorage.getItem('pins')) || []
+  pins.value = addedPins
+  pins.value.forEach(pin => {
+    createMarker(pin)
+  })
 
-    if (description) {
-      const marker = new mapboxgl.Marker()
-        .setLngLat([pin.lng, pin.lat])
-        .setPopup(new mapboxgl.Popup().setText(description))
-        .addTo(map)
+  // add a pin with description to the map
+  map.value.on('click', (e) => {
+    const pin = {
+      lng: e.lngLat.lng,
+      lat: e.lngLat.lat,
+      description: prompt('Describe your pin')
+    }
+
+    if (pin.description) {
+      pins.value.push(pin)  // add to array for reload
+      localStorage.setItem('pins', JSON.stringify(pins.value))
+      createMarker(pin)
     }
   })
 })
+
+// creates a marker given a pin. expects longitude, latitude, and description
+function createMarker(pin) {
+  new mapboxgl.Marker()
+    .setLngLat([pin.lng, pin.lat])
+    .setPopup(new mapboxgl.Popup().setText(pin.description))
+    .addTo(map.value)
+}
 </script>
 
 <template>
@@ -40,8 +62,8 @@ onMounted(() => {
 html, body, #app, .map-container {
   margin: 0;
   padding: 0;
-  width: 100%;
-  height: 100%;
+  width: 80%;
+  height: 80%;
 }
 
 .map-container {
