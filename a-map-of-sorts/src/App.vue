@@ -48,7 +48,11 @@ function createMarker(pin) {
   const marker = new mapboxgl.Marker()
     .setLngLat([pin.lng, pin.lat])
     .addTo(map.value)
-  const popup = new mapboxgl.Popup().setText(pin.description)
+
+  const popup = new mapboxgl.Popup({
+    closeButton: false,
+    closeOnClick: false
+  }).setText(pin.description)
 
   // event listeners: description attached to a pin appears when user hovers over the pin
   marker.getElement().addEventListener('mouseenter', () => {
@@ -72,8 +76,8 @@ function createMarker(pin) {
 html, body, #app, .map-container {
   margin: 0;
   padding: 0;
-  width: 80%;
-  height: 80%;
+  width: 100%;
+  height: 100%;
 }
 
 .map-container {
