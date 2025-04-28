@@ -1,6 +1,19 @@
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'
 import TheWelcome from './components/TheWelcome.vue'
+import { ref, onMounted } from 'vue'
+import mapboxgl from 'mapbox-gl'
+
+onMounted(() => {
+  mapboxgl.accessToken = import.meta.env.VITE_TOKEN
+
+  const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v12',
+    center: [-82.879143, 40.021568],   // gahanna, ohio
+    zoom: 12
+  })
+})
 </script>
 
 <template>
@@ -12,9 +25,9 @@ import TheWelcome from './components/TheWelcome.vue'
     </div>
   </header>
 
-  <main>
-    <TheWelcome />
-  </main>
+  <div id="app">
+    <div id="map" class="map-container"></div>
+  </div>
 </template>
 
 <style scoped>
