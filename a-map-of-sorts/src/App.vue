@@ -5,7 +5,7 @@ import { ref, onMounted } from 'vue'
 import mapboxgl from 'mapbox-gl'
 
 // public access token for mapbox
-mapboxgl.accessToken = import.meta.env.VITE_TOKEN
+mapboxgl.accessToken = 'pk.eyJ1IjoiaG9mZm1laXN0ZXIiLCJhIjoiY21hMWJ3bG13MDY1bTJrb2tua2hjNHZ4aiJ9.zeph7S2xW9LIUKYhokPx2g'
 
 // initialize map and array of user's pins
 const map = ref(null)
