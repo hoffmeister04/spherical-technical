@@ -45,7 +45,7 @@ onMounted(() => {
 
 // creates a marker given a pin. expects longitude, latitude, and description
 function createMarker(pin) {
-  const colors = ['#4169E1', '#FFD700']  // color options for pins
+  const colors = ['#4169E1', '#FFCC00']  // color options for pins
 
   const marker = new mapboxgl.Marker({
     color: colors[Math.floor(Math.random() * colors.length)]
@@ -67,10 +67,17 @@ function createMarker(pin) {
     popup.remove()
   })
 }
+
+// removes all pins and reloads the page
+function deletePins() {
+  localStorage.removeItem('pins')
+  location.reload()
+}
 </script>
 
 <template>
   <div id="app">
+    <button id="delete-pins" @click="deletePins">Clear Pins</button>
     <div id="map" class="map-container"></div>
   </div>
 </template>
@@ -87,6 +94,26 @@ html, body, #app, .map-container {
   position: absolute;
   top: 0;
   bottom: 0;
+  left: 0;
+  right: 0;
   width: 100%
+}
+
+#delete-pins {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+  padding: 8px 12px;
+  background-color: #f34f4f;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#delete-pins:hover {
+  background-color: #f80e0e;
 }
 </style>
