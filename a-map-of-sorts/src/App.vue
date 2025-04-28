@@ -45,8 +45,10 @@ onMounted(() => {
 
 // creates a marker given a pin. expects longitude, latitude, and description
 function createMarker(pin) {
+  const colors = ['#4169E1', '#FFD700']  // color options for pins
+
   const marker = new mapboxgl.Marker({
-    color: "#FFD700"
+    color: colors[Math.floor(Math.random() * colors.length)]
   }).setLngLat([pin.lng, pin.lat])
     .addTo(map.value)
 
