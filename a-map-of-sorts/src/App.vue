@@ -45,10 +45,20 @@ onMounted(() => {
 
 // creates a marker given a pin. expects longitude, latitude, and description
 function createMarker(pin) {
-  new mapboxgl.Marker()
+  const marker = new mapboxgl.Marker()
     .setLngLat([pin.lng, pin.lat])
-    .setPopup(new mapboxgl.Popup().setText(pin.description))
     .addTo(map.value)
+  const popup = new mapboxgl.Popup().setText(pin.description)
+
+  // event listeners: description attached to a pin appears when user hovers over the pin
+  marker.getElement().addEventListener('mouseenter', () => {
+    popup.addTo(map.value)
+    popup.setLngLat([pin.lng, pin.lat])
+  })
+
+  marker.getElement().addEventListener('mouseleave', () => {
+    popup.remove()
+  })
 }
 </script>
 
